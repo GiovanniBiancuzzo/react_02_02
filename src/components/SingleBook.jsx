@@ -3,60 +3,50 @@
 // Converti il tuo componente SingleBook in una classe, e crea il suo stato contenente una proprietà booleana highlighted.
 // Cliccare sul SingleBook dovrà fare il toggle della proprietà highlighted. Se la proprietà highlighted sarà true, il SingleBook dovrà ricevere dello stile che rifletta il cambio di stato, visivamente.
 
-import { Component } from "react";
+import { useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 
-class SingleBook extends Component {
-    state = {
-        highlighted: false,
-    };
+const SingleBook = (props) => {
+    const [highlighted, setHighlighted] = useState(false);
 
-    render() {
-        return (
-            <Container>
-                <Card
-                    style={{
-                        width: "18rem",
-                        // borderColor: this.state.highlighted ? "#dc3545" : "#212529",
-                        // borderWidth: this.state.highlighted ? "10px" : "5px",
-                        border: this.state.highlighted
-                            ? "10px solid #dc3545"
-                            : "3px solid #212529",
-                    }}
-                >
-                    <Card.Img variant="top" src={this.props.book.img} />
-                    <Card.Body>
-                        <Card.Title>{this.props.book.title}</Card.Title>
-                        <Card.Text>
-                            <b>Genere</b>: {this.props.book.category}
-                        </Card.Text>
-                        <Card.Text>
-                            <b>ASIN</b>: {this.props.book.asin}
-                        </Card.Text>
-                        <Button
-                            variant="primary"
-                            onClick={() =>
-                                this.setState({
-                                    highlighted: this.state.highlighted
-                                        ? false
-                                        : true,
-                                })
-                            }
-                        >
-                            {this.props.book.price} €
-                        </Button>
-                        <Button
-                            variant="warning"
-                            onClick={() => {
-                                this.props.setAsin(this.props.book.asin);
-                            }}
-                        >
-                            Commenti
-                        </Button>
-                    </Card.Body>
-                </Card>
-            </Container>
-        );
-    }
-}
+    return (
+        <Container>
+            <Card
+                style={{
+                    width: "18rem",
+                    border: highlighted
+                        ? "10px solid #dc3545"
+                        : "3px solid #212529",
+                }}
+            >
+                <Card.Img variant="top" src={props.book.img} />
+                <Card.Body>
+                    <Card.Title>{props.book.title}</Card.Title>
+                    <Card.Text>
+                        <b>Genere</b>: {props.book.category}
+                    </Card.Text>
+                    <Card.Text>
+                        <b>ASIN</b>: {props.book.asin}
+                    </Card.Text>
+                    <Button
+                        variant="primary"
+                        onClick={() =>
+                            setHighlighted(highlighted === false ? true : false)
+                        }
+                    >
+                        {props.book.price} €
+                    </Button>
+                    <Button
+                        variant="warning"
+                        onClick={() => {
+                            props.setAsin(props.book.asin);
+                        }}
+                    >
+                        Commenti
+                    </Button>
+                </Card.Body>
+            </Card>
+        </Container>
+    );
+};
 export default SingleBook;

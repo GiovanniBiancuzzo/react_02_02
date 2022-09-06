@@ -1,14 +1,12 @@
 // CommentsList avrà all’interno una lista di commenti riguardo il libro selezionato, l’array di commenti verrà passato come prop dal componente CommentArea. Ogni commento sarà sempre un componente SingleComment.
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import SingleComment from "./SingleComment";
 
-class CommentsList extends Component {
-    state = {
-        comments: [],
-    };
+const CommentsList = (props) => {
+    const [comments, setComments] = useState([]);
 
-    fetchComments(asin) {
+    const fetchComments = (asin) => {
         fetch(`https://striveschool-api.herokuapp.com/api/comments/${asin}`, {
             method: "GET",
             headers: {
@@ -19,40 +17,31 @@ class CommentsList extends Component {
         })
             .then((res) => res.json())
             .then((data) => {
-                this.setState({
-                    comments: data,
-                });
+                setComments(data);
             })
             .catch((error) => console.log("Qualcosa è andato storto", error));
-    }
+    };
 
-    componentDidMount() {
-        this.fetchComments(this.props.commentsList);
-    }
+    useEffect(() => {
+        console.log("Component did mount chiamato in comment list");
+        fetchComments(props.commentsList);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentDidUpdate(prevProps, prevState) {
-        console.log("did update in comments list");
-        if (prevProps.commentsList !== this.props.commentsList) {
-            //il vecchio asin è diverso dal nuovo, appena arrivato? se si settalo come nuovo e ricarica il componente
-            this.fetchComments(this.props.commentsList);
-        }
-    }
+    useEffect(() => {
+        console.log("Component did update chiamato in comment list");
+        fetchComments(props.commentsList);
+    }, [props.commentsList]);
 
-    render() {
-        return (
-            <ListGroup>
-                {this.state.comments.map((comment) => {
-                    // console.log(comment);
-                    return (
-                        <SingleComment
-                            key={comment._id}
-                            commentElement={comment}
-                        />
-                    );
-                })}
-            </ListGroup>
-        );
-    }
-}
+    return (
+        <ListGroup>
+            {comments.map((comment) => {
+                return (
+                    <SingleComment key={comment._id} commentElement={comment} />
+                );
+            })}
+        </ListGroup>
+    );
+};
 
 export default CommentsList;

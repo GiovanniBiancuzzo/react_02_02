@@ -1,12 +1,9 @@
-import { Component } from "react";
 import { Badge, Button, ListGroup } from "react-bootstrap";
 
-class SingleComment extends Component {
-    state = {};
-
-    deleteComment = () => {
+const SingleComment = (props) => {
+    const deleteComment = () => {
         fetch(
-            `https://striveschool-api.herokuapp.com/api/comments/${this.props.commentElement._id}`,
+            `https://striveschool-api.herokuapp.com/api/comments/${props.commentElement._id}`,
             {
                 method: "DELETE",
                 headers: {
@@ -28,23 +25,19 @@ class SingleComment extends Component {
             });
     };
 
-    render() {
-        return (
-            <ListGroup.Item>
-                <div>
-                    Voto:{" "}
-                    <Badge variant="warning">
-                        {this.props.commentElement.rate}
-                    </Badge>
-                    <Button variant="danger" onClick={this.deleteComment}>
-                        Cancella commento
-                    </Button>
-                </div>
-                <br></br>
-                {this.props.commentElement.comment}
-            </ListGroup.Item>
-        );
-    }
-}
+    return (
+        <ListGroup.Item>
+            <div>
+                Voto:{" "}
+                <Badge variant="warning">{props.commentElement.rate}</Badge>
+                <Button variant="danger" onClick={deleteComment}>
+                    Cancella commento
+                </Button>
+            </div>
+            <br></br>
+            {props.commentElement.comment}
+        </ListGroup.Item>
+    );
+};
 
 export default SingleComment;
