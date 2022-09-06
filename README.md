@@ -1,0 +1,3 @@
+Fai il refactor della struttura della tua pagina principale: dovranno esserci due colonne. Una a sinistra contenente la griglia con i libri e una sulla destra con il componente CommentArea. Entrambi dovranno essere sempre visibili. Se inizialmente nessun libro è selezionato, il CommentArea non deve mostrare alcun contenuto.
+
+Quando un libro sulla sinistra viene selezionato, il suo codice asin dovrà essere salvato nello stato del componente principale; in questo modo potrà essere passato giù al CommentArea via prop. Quando CommentArea rileva un nuovo valore di asin con il metodo componentDidUpdate(), dovrà effettuare un fetch per ricevere i commenti che verranno poi visualizzati.
