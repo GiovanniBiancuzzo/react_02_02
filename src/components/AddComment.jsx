@@ -30,6 +30,7 @@ const AddComment = (props) => {
                 if (res.ok) {
                     alert("Commento inviato correttamente");
                     setCommentElement("");
+                    props.show(false);
                 } else {
                     alert("Errore nell'invio del commento");
                 }
