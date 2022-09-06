@@ -4,20 +4,22 @@ import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 
 const AddComment = (props) => {
-    const [comment, setComment] = useState("");
-    const [rate, setRate] = useState("");
-    const [elementId, setElementId] = useState(props.comment);
+    // const [comment, setComment] = useState("");
+    // const [rate, setRate] = useState("");
+    // const [elementId, setElementId] = useState(props.comment);
+
+    const [commentElement, setCommentElement] = useState({
+        comment: "",
+        rate: "",
+        elementId: props.comment,
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Invio commento");
         fetch("https://striveschool-api.herokuapp.com/api/comments", {
             method: "POST",
-            body: JSON.stringify({
-                comment: comment,
-                rate: rate,
-                elementId: elementId,
-            }),
+            body: JSON.stringify(commentElement),
             headers: {
                 "Content-Type": "application/json",
                 Authorization:
@@ -27,8 +29,7 @@ const AddComment = (props) => {
             .then((res) => {
                 if (res.ok) {
                     alert("Commento inviato correttamente");
-                    setComment("");
-                    setRate("");
+                    setCommentElement("");
                 } else {
                     alert("Errore nell'invio del commento");
                 }
@@ -40,7 +41,12 @@ const AddComment = (props) => {
 
     useEffect(() => {
         console.log("did update in add comment");
-        setElementId(props.comment);
+        setCommentElement({
+            ...commentElement,
+            elementId: props.comment,
+        });
+        // setElementId(props.comment);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.comment]);
 
     return (
@@ -50,9 +56,12 @@ const AddComment = (props) => {
                     as="textarea"
                     rows={3}
                     placeholder="Aggungi un commento"
-                    value={comment}
+                    value={commentElement.comment}
                     onChange={(e) => {
-                        setComment(e.target.value);
+                        setCommentElement({
+                            ...commentElement,
+                            comment: e.target.value,
+                        });
                     }}
                 />
             </Form.Group>
@@ -61,9 +70,13 @@ const AddComment = (props) => {
                 <Form.Label>Vota</Form.Label>
                 <Form.Control
                     as="select"
-                    value={rate}
+                    value={commentElement.rate}
                     onChange={(e) => {
-                        setRate(e.target.value);
+                        setCommentElement({
+                            ...commentElement,
+                            rate: e.target.value,
+                        });
+                        // setRate(e.target.value);
                     }}
                 >
                     <option>1</option>
